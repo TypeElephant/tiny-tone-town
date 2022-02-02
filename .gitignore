@@ -1,0 +1,13 @@
+# dependencies
+node_modules
+
+# build artifacts
+/build
+
+# misc
+.DS_Store
+
+.env.*
+
+public/static
+public/assets
