@@ -7,7 +7,6 @@ module.exports = {
     "react",
     "@typescript-eslint",
     "prettier",
-    "cypress",
     "simple-import-sort",
     "import",
     "unused-imports",
@@ -29,7 +28,7 @@ module.exports = {
     },
     ecmaVersion: 12,
     sourceType: "module",
-    project: ["./tsconfig.json", "./cypress/tsconfig.json"],
+    project: ["./tsconfig.json"],
   },
   rules: {
     "@typescript-eslint/array-type": 1,

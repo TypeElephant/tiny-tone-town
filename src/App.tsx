@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react"
 
-import Sequencer from "./Sequencer"
+import { Sequencer } from "./Sequencer"
 
 import "./index.css"
 

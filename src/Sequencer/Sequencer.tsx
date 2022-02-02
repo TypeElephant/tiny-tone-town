@@ -8,40 +8,39 @@ import React, {
 import cn from "classnames"
 import * as Tone from "tone"
 
+import NoteSlider from "./NoteSlider"
+
 const DEFAULT_INTERVAL_TIME = 200
 const DEFAULT_NOTE = 440
+const NUMBER_OF_STEPS = 16
 
 const Sequencer: FC = () => {
   const [isPlaying, setIsPlaying] = useState(false)
   const [step, setStep] = useState(1)
   const [intervalTime, setIntervalTime] = useState(DEFAULT_INTERVAL_TIME)
 
-  const initialNotes = Array.from(Array(9)).fill(DEFAULT_NOTE)
+  const initialNotes = Array.from(Array(NUMBER_OF_STEPS)).fill(DEFAULT_NOTE)
   const [notes, setNotes] = useState<number[]>(initialNotes)
 
+  const reverb = useMemo(() => new Tone.Reverb(3).toDestination(), [])
   const synthA = useMemo(
-    () => new Tone.FMSynth({portamento: 0.02}).toDestination(),
-    [],
+    () => new Tone.FMSynth({ portamento: 0 }).toDestination().connect(reverb),
+    [reverb],
   )
-  const reverb = useMemo(() => new Tone.Reverb(5).toDestination(), [])
-
-  useEffect(() => {
-    synthA.connect(reverb)
-  }, [synthA, reverb])
 
   useEffect(() => {
     let interval: NodeJS.Timer | undefined
 
     if (interval === undefined && isPlaying) {
       interval = setInterval(() => {
+        synthA.triggerAttackRelease(notes[step - 1], "8hz", Tone.now())
         setStep(prevStep => {
-          if (prevStep < 8) {
+          if (prevStep < NUMBER_OF_STEPS) {
             return prevStep + 1
           } else {
             return 1
           }
         })
-        synthA.triggerAttackRelease(notes[step], "8hz", Tone.now())
       }, intervalTime)
     }
 
@@ -78,8 +77,28 @@ const Sequencer: FC = () => {
     setIntervalTime(Number(e.target.value))
   }
 
+  const handleOnChangeNote = (value: number, idx: number): void => {
+    const nextNotes = [...notes]
+    nextNotes[idx] = value
+    setNotes(nextNotes)
+  }
+
   return (
     <>
+      {notes.map((note, idx) => {
+        return (
+          <NoteSlider
+            note={note}
+            idx={idx}
+            currentStep={step}
+            onChangeNote={handleOnChangeNote}
+            key={idx}
+          />
+        )
+      })}
+      <button className={buttonStyle} onClick={handleOnClickStartStop}>
+        {buttonText(isPlaying)}
+      </button>
       <input
         type="range"
         min="100"
@@ -88,28 +107,6 @@ const Sequencer: FC = () => {
         id="note"
         onChange={handleOnChangeIntervalTime}
       />
-      {notes.map((note, idx) => {
-        const handleOnChangeNote: ChangeEventHandler<HTMLInputElement> = e => {
-          const nextNotes = [...notes]
-          nextNotes[idx] = Number(e.target.value)
-          setNotes(nextNotes)
-        }
-
-        return (
-          <input
-            type="range"
-            min="20"
-            max="1200"
-            value={note}
-            id="note"
-            key={idx}
-            onChange={handleOnChangeNote}
-          />
-        )
-      })}
-      <button className={buttonStyle} onClick={handleOnClickStartStop}>
-        {buttonText(isPlaying)}
-      </button>
     </>
   )
 }
