@@ -16,15 +16,14 @@ browserSync.init({
   ghostMode: false,
 })
 
-browserSync.watch("src/**/*.(tsx|ts|scss|json)", async function (event) {
+browserSync.watch("src/**/*.(tsx|ts|css|json)", async function (event) {
   if (event === "change") {
     try {
       await exec(`npm run build -- ${env} evolv`)
       browserSync.reload()
     } catch (e) {
-      const {stdout} = e
+      const { stdout } = e
       console.log(stdout)
     }
   }
 })
-
