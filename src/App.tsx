@@ -56,8 +56,10 @@ const App: FC = () => {
       synthA.triggerAttackRelease(notes[step_], "8hz")
     }
 
-    playNote(step)
-  }, [step, notes, synthA])
+    if (isPlaying) {
+      playNote(step)
+    }
+  }, [isPlaying, step, notes, synthA])
 
   const handleOnClickStartStop = (): void => {
     setIsPlaying(prev => !prev)
