@@ -1,0 +1,11 @@
+{
+  "name": "tiny-tone-town",
+  "version": "1.0.0",
+  "description": "Just a tiny tone town.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
