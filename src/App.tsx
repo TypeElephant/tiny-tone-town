@@ -12,7 +12,7 @@ const App: FC = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full space-y-2">
+    <div className="flex flex-col items-center justify-center max-w-full min-h-full p-12 space-y-2">
       {entered ? (
         <Sequencer />
       ) : (

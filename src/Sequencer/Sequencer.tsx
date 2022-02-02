@@ -84,30 +84,35 @@ const Sequencer: FC = () => {
   }
 
   return (
-    <>
-      {notes.map((note, idx) => {
-        return (
-          <NoteSlider
-            note={note}
-            idx={idx}
-            currentStep={step}
-            onChangeNote={handleOnChangeNote}
-            key={idx}
-          />
-        )
-      })}
-      <button className={buttonStyle} onClick={handleOnClickStartStop}>
-        {buttonText(isPlaying)}
-      </button>
-      <input
-        type="range"
-        min="100"
-        max="800"
-        value={intervalTime}
-        id="note"
-        onChange={handleOnChangeIntervalTime}
-      />
-    </>
+    <div className="space-y-4">
+      <div className="flex flex-col space-y-2">
+        <input
+          type="range"
+          min="100"
+          max="800"
+          value={intervalTime}
+          id="note"
+          onChange={handleOnChangeIntervalTime}
+        />
+        <button className={buttonStyle} onClick={handleOnClickStartStop}>
+          {buttonText(isPlaying)}
+        </button>
+      </div>
+
+      <div className="flex flex-col space-y-2">
+        {notes.map((note, idx) => {
+          return (
+            <NoteSlider
+              note={note}
+              idx={idx}
+              currentStep={step}
+              onChangeNote={handleOnChangeNote}
+              key={idx}
+            />
+          )
+        })}
+      </div>
+    </div>
   )
 }
 
